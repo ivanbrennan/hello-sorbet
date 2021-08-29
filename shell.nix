@@ -17,5 +17,17 @@ in pkgs.mkShell {
   shellHook = ''
     export BUNDLE_PATH=.bundle
     export NIX_ENFORCE_PURITY=0
+
+    sorbet() {
+      local interpreter
+      interpreter=${pkgs.glibc}/lib64/ld-linux-x86-64.so.2
+
+      local sorbet
+      sorbet=$(
+        find .bundle -type f -executable -path '*/libexec/sorbet' | sort -n | head -1
+      )
+
+      $interpreter "$sorbet" "$@"
+    }
   '';
 }
