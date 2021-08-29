@@ -18,16 +18,19 @@ in pkgs.mkShell {
     export BUNDLE_PATH=.bundle
     export NIX_ENFORCE_PURITY=0
 
-    sorbet() {
+    patch_sorbet() {
+      local patchelf
+      patchelf=${pkgs.patchelf}/bin/patchelf
+
       local interpreter
       interpreter=${pkgs.glibc}/lib64/ld-linux-x86-64.so.2
 
       local sorbet
-      sorbet=$(
-        find .bundle -type f -executable -path '*/libexec/sorbet' | sort -n | head -1
-      )
-
-      $interpreter "$sorbet" "$@"
+      for sorbet in $(find .bundle -type f -executable -path '*/libexec/sorbet')
+      do
+          chmod 755 "$sorbet" && $patchelf --set-interpreter $interpreter "$sorbet"
+          chmod 555 "$sorbet"
+      done
     }
   '';
 }
