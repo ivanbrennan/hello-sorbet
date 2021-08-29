@@ -2,12 +2,18 @@ GEM
   remote: https://rubygems.org/
   specs:
     rake (13.0.6)
+    sorbet (0.5.9088)
+      sorbet-static (= 0.5.9088)
+    sorbet-runtime (0.5.9088)
+    sorbet-static (0.5.9088-universal-darwin-14)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   rake
+  sorbet
+  sorbet-runtime
 
 RUBY VERSION
    ruby 2.7.1p83
